@@ -1,0 +1,19 @@
+# Dependencies
+web/node_modules/
+
+# Build output
+web/dist/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Logs
+*.log
+
+# Temp
+99_misc/
+
+# Large files (>50MB, GitHub limit is 100MB)
+02_projects/son_pou/plans_source.ai
+02_projects/son_pou/plans_raster.pdf

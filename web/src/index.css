@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-surface-base text-brand-900 font-sans antialiased;
+}
+
+/* Print layout for "Exportar ficha (PDF)" (PRD 03).
+   When body has .printing-sheet, @media print hides the global sidebar and
+   topbar and collapses the layout so only the sheet content is printed. */
+@media print {
+  body.printing-sheet aside,
+  body.printing-sheet header,
+  body.printing-sheet nav {
+    display: none !important;
+  }
+
+  body.printing-sheet {
+    background: #ffffff !important;
+  }
+
+  body.printing-sheet .lg\:pl-64 {
+    padding-left: 0 !important;
+  }
+
+  body.printing-sheet main {
+    padding: 0 !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+}
