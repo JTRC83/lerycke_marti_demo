@@ -1,21 +1,29 @@
 import { useState } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useProjects } from '../context/ProjectsContext.jsx'
 import { getClienteNombre, getCompletitud } from '../utils/project.js'
 import SheetHeader from '../components/project-sheet/SheetHeader.jsx'
 import SheetTabs from '../components/project-sheet/SheetTabs.jsx'
 import SheetContent from '../components/project-sheet/SheetContent.jsx'
 
+// Valid tab keys so the query param can't inject arbitrary values.
+const TABS_VALIDAS = ['cliente', 'plan', 'presupuesto', 'renders', 'memoria', 'resumen']
+
 // ProjectSheetPage: shell container for a single project (PRD 03).
 // Reads :id, loads the project, and mounts header + grid (tabs | content).
-// The active tab is local state, defaulting to "cliente".
+// The active tab defaults to "cliente" but can be set via ?tab= query param,
+// so navigating from the Presupuestos page opens directly on that tab.
 export default function ProjectSheetPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { getProject } = useProjects()
   const proyecto = getProject(id)
 
-  const [pestanaActiva, setPestanaActiva] = useState('cliente')
+  const tabInicial = searchParams.get('tab')
+  const [pestanaActiva, setPestanaActiva] = useState(
+    TABS_VALIDAS.includes(tabInicial) ? tabInicial : 'cliente',
+  )
   const [exportando, setExportando] = useState(false)
   const completitud = getCompletitud(proyecto)
 

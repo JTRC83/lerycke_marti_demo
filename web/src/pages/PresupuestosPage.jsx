@@ -12,7 +12,7 @@ function PresupuestoRow({ proyecto, navigate }) {
   return (
     <div
       className="bg-surface-card border border-brand-100 rounded-xl p-5 cursor-pointer hover:border-brand-300 transition-colors"
-      onClick={() => navigate(`/proyecto/${proyecto.id}`)}
+      onClick={() => navigate(`/proyecto/${proyecto.id}?tab=presupuesto`)}
     >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div>
