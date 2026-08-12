@@ -41,7 +41,7 @@ function CloseButton({ onClose }) {
   )
 }
 
-function ClienteCard({ cliente, proyectos, onOpen }) {
+function ClienteCard({ cliente, proyectos, onOpen, navigate }) {
   const proyectosCliente = proyectos.filter((p) => getClienteNombre(p) === cliente.nombre)
   const activo = proyectosCliente.length > 0
 
@@ -65,12 +65,49 @@ function ClienteCard({ cliente, proyectos, onOpen }) {
         </span>
       </div>
 
-      <div className="mt-4 flex items-center justify-between">
-        <span className="px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-medium">
-          {proyectosCliente.length} {proyectosCliente.length === 1 ? 'proyecto' : 'proyectos'}
-        </span>
-        <p className="text-xs text-brand-700 font-medium">Ver información →</p>
-      </div>
+      {/* Contacto rápido */}
+      {(cliente.ciudad || cliente.telefono) ? (
+        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-surface-muted">
+          {cliente.ciudad ? <span>{cliente.ciudad}</span> : null}
+          {cliente.telefono ? <span>Tel: {cliente.telefono}</span> : null}
+        </div>
+      ) : null}
+
+      {/* Proyectos asociados */}
+      {proyectosCliente.length > 0 ? (
+        <div className="mt-4 pt-3 border-t border-brand-50 space-y-2">
+          {proyectosCliente.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                navigate(`/proyecto/${p.id}`)
+              }}
+              className="flex items-center justify-between w-full text-left px-3 py-2 rounded-lg hover:bg-brand-50 transition-colors"
+            >
+              <div className="min-w-0">
+                <span className="text-sm font-medium text-brand-900 truncate block">{p.nombre}</span>
+                <span className="text-xs text-surface-muted">
+                  {p.m2 != null ? `${p.m2} m²` : '—'}
+                  {p.presupuestoTotal != null ? ` · ${formatEur(p.presupuestoTotal)}` : ''}
+                </span>
+              </div>
+              <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium shrink-0 ml-2 ${
+                p.estado === 'activo' ? 'bg-state-success/10 text-state-success' :
+                p.estado === 'completado' ? 'bg-brand-100 text-brand-700' :
+                'bg-surface-base text-surface-muted'
+              }`}>{p.estado}</span>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-4 pt-3 border-t border-brand-50">
+          <p className="text-xs text-surface-muted">Sin proyectos asociados</p>
+        </div>
+      )}
+
+      <p className="mt-3 text-xs text-brand-700 font-medium">Ver información →</p>
     </div>
   )
 }
@@ -556,7 +593,7 @@ export default function ClientesPage() {
       {clientesFiltrados.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {clientesFiltrados.map((cliente) => (
-            <ClienteCard key={cliente.id} cliente={cliente} proyectos={projects} onOpen={setClienteAbierto} />
+            <ClienteCard key={cliente.id} cliente={cliente} proyectos={projects} onOpen={setClienteAbierto} navigate={navigate} />
           ))}
         </div>
       ) : (
