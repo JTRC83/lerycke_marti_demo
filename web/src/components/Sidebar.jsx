@@ -2,6 +2,14 @@ import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 
 // Inline SVG icon set (no external icon library).
+function IconProjects() {
+  return (
+    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function IconClients() {
   return (
     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -34,6 +42,7 @@ function IconRenders() {
 }
 
 const navItems = [
+  { to: '/dashboard', label: 'Proyectos', Icon: IconProjects },
   { to: '/clientes', label: 'Clientes', Icon: IconClients },
   { to: '/presupuestos', label: 'Presupuestos', Icon: IconBudgets },
   { to: '/renders', label: 'Renders', Icon: IconRenders },
