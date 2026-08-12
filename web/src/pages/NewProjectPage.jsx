@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProjects } from '../context/ProjectsContext.jsx'
+import { useClientes } from '../context/ClientesContext.jsx'
 import { currentYYYYMM, medId } from '../utils/format.js'
 import StepperHeader from '../components/new-project/StepperHeader.jsx'
 import ClientForm from '../components/new-project/ClientForm.jsx'
@@ -14,6 +15,7 @@ import TimelineMedia from '../components/new-project/TimelineMedia.jsx'
 export default function NewProjectPage() {
   const navigate = useNavigate()
   const { addProject } = useProjects()
+  const { addCliente, getCliente } = useClientes()
 
   const [step, setStep] = useState(1)
   const [datosCliente, setDatosCliente] = useState(null)
@@ -116,6 +118,30 @@ export default function NewProjectPage() {
       },
       multimedia,
     })
+
+    // Register the client in the ClientesContext so the CRM reflects it.
+    // Only add if it is a new client (no existing id) to avoid duplicates.
+    if (cliente.nombre && !cliente.id) {
+      addCliente({
+        nombre: cliente.nombre,
+        email: cliente.email || '',
+        telefono: cliente.telefono || '',
+        direccion: cliente.direccion || '',
+        ciudad: cliente.ciudad || '',
+        codigoPostal: cliente.codigoPostal || '',
+      })
+    } else if (cliente.id && !getCliente(cliente.id)) {
+      // Safety net: if the id is not found in the context, add it anyway.
+      addCliente({
+        id: cliente.id,
+        nombre: cliente.nombre,
+        email: cliente.email || '',
+        telefono: cliente.telefono || '',
+        direccion: cliente.direccion || '',
+        ciudad: cliente.ciudad || '',
+        codigoPostal: cliente.codigoPostal || '',
+      })
+    }
 
     setGuardando(false)
     navigate(`/proyecto/${id}`)
