@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import KpiCard from '../components/KpiCard.jsx'
 import ProjectCard from '../components/ProjectCard.jsx'
 import { useProjects } from '../context/ProjectsContext.jsx'
 
@@ -61,18 +60,6 @@ function matchesSearch(p, q) {
   )
 }
 
-// Completed document count for a project (presupuesto, plan, memoria, renders).
-function completedDocs(p) {
-  const d = p.docs || {}
-  let c = 0
-  if (d.presupuesto) c += 1
-  if (d.plan) c += 1
-  if (d.memoria) c += 1
-  const r = d.renders || { generados: 0, total: 0 }
-  if (r.total > 0 && r.generados === r.total) c += 1
-  return c
-}
-
 export default function DashboardPage() {
   const navigate = useNavigate()
   const { projects } = useProjects()
@@ -80,14 +67,14 @@ export default function DashboardPage() {
   const [stateFilter, setStateFilter] = useState('todos')
   const [sort, setSort] = useState('recientes')
 
-  // KPIs derived from the live projects array so they track new projects.
-  const kpis = useMemo(
-    () => [
-      { id: 'totales', etiqueta: 'Proyectos totales', valor: projects.length, icon: 'folder' },
-      { id: 'activos', etiqueta: 'Activos', valor: projects.filter((p) => p.estado === 'activo').length, icon: 'bolt' },
-      { id: 'borradores', etiqueta: 'Borradores', valor: projects.filter((p) => p.estado === 'borrador').length, icon: 'pencil' },
-      { id: 'documentos', etiqueta: 'Documentos generados', valor: projects.reduce((a, p) => a + completedDocs(p), 0), icon: 'doc' },
-    ],
+  // Count per state for the filter badges.
+  const counts = useMemo(
+    () => ({
+      todos: projects.length,
+      activo: projects.filter((p) => p.estado === 'activo').length,
+      borrador: projects.filter((p) => p.estado === 'borrador').length,
+      completado: projects.filter((p) => p.estado === 'completado').length,
+    }),
     [projects],
   )
 
@@ -124,15 +111,8 @@ export default function DashboardPage() {
 
   return (
     <>
-      {/* KPI row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {kpis.map((k) => (
-          <KpiCard key={k.id} etiqueta={k.etiqueta} valor={k.valor} icon={k.icon} />
-        ))}
-      </div>
-
       {/* Projects area */}
-      <div className="mt-8">
+      <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-surface-muted">
             Gestión de proyectos de interiorismo
@@ -168,6 +148,7 @@ export default function DashboardPage() {
             <div className="flex flex-wrap gap-2">
               {STATE_FILTERS.map((f) => {
                 const active = stateFilter === f.id
+                const count = counts[f.id] ?? 0
                 return (
                   <button
                     key={f.id}
@@ -175,11 +156,14 @@ export default function DashboardPage() {
                     onClick={() => setStateFilter(f.id)}
                     className={
                       active
-                        ? 'px-3 py-1.5 rounded-lg text-sm font-medium border bg-brand-700 text-white border-brand-700 transition-colors'
-                        : 'px-3 py-1.5 rounded-lg text-sm font-medium border bg-surface-card text-brand-800 border-brand-100 hover:border-brand-300 transition-colors'
+                        ? 'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border bg-brand-700 text-white border-brand-700 transition-colors'
+                        : 'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border bg-surface-card text-brand-800 border-brand-100 hover:border-brand-300 transition-colors'
                     }
                   >
                     {f.label}
+                    <span className={`text-xs ${active ? 'text-white/70' : 'text-surface-muted'}`}>
+                      {count}
+                    </span>
                   </button>
                 )
               })}
