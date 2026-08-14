@@ -5,6 +5,7 @@ export const clientes = [
   {
     id: 'cli-001',
     nombre: 'Xisca i Llorenc',
+    cif: '12345678A',
     email: 'xisca@email.com',
     telefono: '+34 6XX XXX XXX',
     direccion: 'C/ Son Pou, 12',
@@ -14,6 +15,7 @@ export const clientes = [
   {
     id: 'cli-002',
     nombre: 'Cafe BOU',
+    cif: 'B12345678',
     email: 'bou@cafe.com',
     telefono: '+34 6XX XXX XXX',
     direccion: 'Av. Sagrada Familia, 8',
@@ -23,6 +25,7 @@ export const clientes = [
   {
     id: 'cli-003',
     nombre: 'Magdalena i Pere',
+    cif: '87654321B',
     email: 'magdalena@email.com',
     telefono: '+34 6XX XXX XXX',
     direccion: 'C/ Sant Miquel, 45',
@@ -32,6 +35,7 @@ export const clientes = [
   {
     id: 'cli-004',
     nombre: 'Toni Oliver',
+    cif: '11223344C',
     email: 'toni@email.com',
     telefono: '+34 6XX XXX XXX',
     direccion: 'Ramon Llull, 31',
@@ -41,6 +45,7 @@ export const clientes = [
   {
     id: 'cli-005',
     nombre: 'Joana Ribot Bosch',
+    cif: '99887766D',
     email: 'joana@email.com',
     telefono: '+34 6XX XXX XXX',
     direccion: 'Joan Binimelis, 10',

@@ -67,6 +67,7 @@ export default function ClienteTab({ proyecto, onIrPlan }) {
         <h3 className="text-base font-semibold text-brand-900 mb-5">Datos del cliente</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <ReadOnlyField label="Nombre" value={getClienteNombre(proyecto)} />
+          <ReadOnlyField label="CIF / NIF" value={cliente.cif} />
           <ReadOnlyField label="Email" value={cliente.email} />
           <ReadOnlyField label="Teléfono" value={cliente.telefono} />
           <ReadOnlyField label="Dirección" value={cliente.direccion} />

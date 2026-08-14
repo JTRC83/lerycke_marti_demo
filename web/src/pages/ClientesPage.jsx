@@ -12,6 +12,7 @@ import InputField from '../components/new-project/InputField.jsx'
 
 const EMPTY_FORM = {
   nombre: '',
+  cif: '',
   email: '',
   telefono: '',
   direccion: '',
@@ -158,6 +159,13 @@ function NuevoClienteModal({ onClose, onGuardar }) {
               placeholder="Nombre del cliente"
               error={errors.nombre}
               required
+            />
+            <InputField
+              id="nuevo-cif"
+              label="CIF / NIF"
+              value={form.cif}
+              onChange={(e) => updateField('cif', e.target.value)}
+              placeholder="12345678A / B12345678"
             />
             <InputField
               id="nuevo-email"
@@ -337,6 +345,12 @@ function ClienteModal({ cliente, proyectos, navigate, onClose, onEditar, onElimi
                   required
                 />
                 <InputField
+                  id="edit-cif"
+                  label="CIF / NIF"
+                  value={form.cif}
+                  onChange={(e) => updateField('cif', e.target.value)}
+                />
+                <InputField
                   id="edit-email"
                   label="Email"
                   type="email"
@@ -371,6 +385,7 @@ function ClienteModal({ cliente, proyectos, navigate, onClose, onEditar, onElimi
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <InfoField label="CIF / NIF" value={cliente.cif} />
                 <InfoField label="Email" value={cliente.email} />
                 <InfoField label="Teléfono" value={cliente.telefono} />
                 <InfoField label="Dirección" value={cliente.direccion} />

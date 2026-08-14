@@ -14,11 +14,12 @@ export function getClienteNombre(proyecto) {
 // string-OR-object shape. Missing fields are empty strings.
 export function getClienteObj(proyecto) {
   if (!proyecto) {
-    return { nombre: '', email: '', telefono: '', direccion: '', ciudad: '', codigoPostal: '' }
+    return { nombre: '', cif: '', email: '', telefono: '', direccion: '', ciudad: '', codigoPostal: '' }
   }
   if (typeof proyecto.cliente === 'string') {
     return {
       nombre: proyecto.cliente,
+      cif: '',
       email: '',
       telefono: '',
       direccion: proyecto.direccion || '',
@@ -29,6 +30,7 @@ export function getClienteObj(proyecto) {
   const c = proyecto.cliente || {}
   return {
     nombre: c.nombre || '',
+    cif: c.cif || '',
     email: c.email || '',
     telefono: c.telefono || '',
     direccion: c.direccion || proyecto.direccion || '',

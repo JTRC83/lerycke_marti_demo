@@ -97,6 +97,7 @@ export default function NewProjectPage() {
       cliente: {
         id: cliente.id || '',
         nombre: cliente.nombre || '',
+        cif: cliente.cif || '',
         email: cliente.email || '',
         telefono: cliente.telefono || '',
         direccion: cliente.direccion || '',

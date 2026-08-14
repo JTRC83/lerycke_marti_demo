@@ -7,6 +7,7 @@ import InputField from './InputField.jsx'
 const EMPTY = {
   id: '',
   nombre: '',
+  cif: '',
   email: '',
   ciudad: '',
   telefono: '',
@@ -64,6 +65,13 @@ export default function ClientForm({ datos, onChange, errors }) {
           placeholder="Nombre del cliente"
           error={errors?.nombre}
           required
+        />
+        <InputField
+          id="cifCliente"
+          label="CIF / NIF"
+          value={cliente.cif}
+          onChange={(e) => updateField('cif', e.target.value)}
+          placeholder="12345678A / B12345678"
         />
         <InputField
           id="emailCliente"
