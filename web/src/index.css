@@ -127,7 +127,7 @@ body {
 
   .print-section {
     margin-bottom: 28px;
-    page-break-inside: avoid;
+    page-break-inside: auto;
   }
 
   .print-section-title {
@@ -252,6 +252,21 @@ body {
     font-size: 10px;
     padding: 2px 8px;
     border-radius: 999px;
+  }
+
+  .print-capitulo {
+    margin-bottom: 12px;
+    page-break-inside: avoid;
+  }
+
+  .print-cap-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a3a2a;
+    margin-bottom: 6px;
+    padding: 4px 8px;
+    background: #f0f4f1;
+    border-radius: 4px;
   }
 
   .print-materials {
