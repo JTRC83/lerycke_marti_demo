@@ -26,6 +26,7 @@ export default function NewProjectPage() {
     observacionesCliente: '',
   })
   const [multimedia, setMultimedia] = useState([])
+  const [textoNota, setTextoNota] = useState('')
   const [errors, setErrors] = useState({})
   const [guardando, setGuardando] = useState(false)
 
@@ -42,6 +43,13 @@ export default function NewProjectPage() {
 
   function removeMultimediaEntry(id) {
     setMultimedia((prev) => prev.filter((m) => m.id !== id))
+  }
+
+  function addTextoNota() {
+    const texto = textoNota.trim()
+    if (!texto) return
+    addMultimediaEntry({ tipo: 'texto', contenido: { texto } })
+    setTextoNota('')
   }
 
   // --- Validation ---
@@ -187,6 +195,31 @@ export default function NewProjectPage() {
               onRemove={removeMultimediaEntry}
             />
             <TimelineMedia historico={multimedia} onRemove={removeMultimediaEntry} />
+          </div>
+
+          {/* Notas de texto */}
+          <div className="bg-surface-card border border-brand-100 rounded-xl p-6">
+            <h4 className="text-sm font-semibold text-brand-900 mb-1">Notas de texto</h4>
+            <p className="text-xs text-surface-muted mb-3">
+              Escribe notas sobre la visita, peticiones del cliente o cualquier detalle relevante. Se añadirán al histórico.
+            </p>
+            <div className="flex gap-3">
+              <textarea
+                value={textoNota}
+                onChange={(e) => setTextoNota(e.target.value)}
+                placeholder="Ej: El cliente quiere más luz natural en el salón, cambiar la cocina a estilo industrial..."
+                rows={3}
+                className="flex-1 px-3 py-2.5 rounded-xl border border-brand-200 bg-white text-brand-900 placeholder:text-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-500/30 transition resize-y"
+              />
+              <button
+                type="button"
+                onClick={addTextoNota}
+                disabled={!textoNota.trim()}
+                className="px-4 py-2.5 rounded-xl bg-brand-700 text-white text-sm font-medium hover:bg-brand-800 disabled:opacity-50 transition-colors self-start whitespace-nowrap"
+              >
+                Añadir nota
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center justify-between pt-2">
