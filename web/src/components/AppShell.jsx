@@ -11,6 +11,7 @@ const titlesByPath = {
   '/clientes': 'Clientes',
   '/presupuestos': 'Presupuestos',
   '/renders': 'Renders',
+  '/materiales': 'Materiales',
   '/nuevo-proyecto': 'Nuevo proyecto',
 }
 

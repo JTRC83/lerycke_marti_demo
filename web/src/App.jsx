@@ -9,6 +9,7 @@ import ClientesPage from './pages/ClientesPage.jsx'
 import PresupuestosPage from './pages/PresupuestosPage.jsx'
 import RendersPage from './pages/RendersPage.jsx'
 import DashboardEconomicoPage from './pages/DashboardEconomicoPage.jsx'
+import MaterialesPage from './pages/MaterialesPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 
 // Placeholder for protected routes outside Part 1 scope.
@@ -68,6 +69,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <RendersPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/materiales"
+        element={
+          <ProtectedRoute>
+            <MaterialesPage />
           </ProtectedRoute>
         }
       />

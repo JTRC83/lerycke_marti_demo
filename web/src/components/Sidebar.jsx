@@ -13,6 +13,16 @@ function IconDashboard() {
   )
 }
 
+function IconMateriales() {
+  return (
+    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M2 7l10-4 10 4-10 4-10-4z" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2 7v10l10 4 10-4V7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 11v10" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function IconProjects() {
   return (
     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -58,6 +68,7 @@ const navItems = [
   { to: '/clientes', label: 'Clientes', Icon: IconClients },
   { to: '/presupuestos', label: 'Presupuestos', Icon: IconBudgets },
   { to: '/renders', label: 'Renders', Icon: IconRenders },
+  { to: '/materiales', label: 'Materiales', Icon: IconMateriales },
 ]
 
 export default function Sidebar() {
