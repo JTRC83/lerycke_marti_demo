@@ -221,13 +221,13 @@ function PresupuestoGenerated({ proyecto, onVerify }) {
         />
       ))}
 
-      {/* Añadir capítulo */}
+      {/* Añadir extras/imprevistos */}
       <button
         type="button"
         onClick={addCapitulo}
         className="w-full py-3 rounded-xl border-2 border-dashed border-brand-200 text-brand-700 text-sm font-medium hover:border-brand-300 hover:bg-brand-50/40 transition-colors"
       >
-        + Añadir capítulo
+        + Añadir extras / imprevistos
       </button>
 
       {/* Resumen (sin IVA — solo base imponible) */}
@@ -238,8 +238,8 @@ function PresupuestoGenerated({ proyecto, onVerify }) {
             <span className="text-surface-muted">Base imponible</span>
             <span className="font-medium text-brand-900">{formatEur(base)}</span>
           </div>
-          <p className="text-xs text-surface-muted italic pt-2 border-t border-brand-100">
-            IVA e IRPF se aplican al generar la factura, no en el presupuesto.
+          <p className="text-xs text-surface-muted pt-2 border-t border-brand-100">
+            Indica cantidad no gravable
           </p>
           <div className="flex justify-between text-base pt-2">
             <span className="font-bold text-brand-900">TOTAL PRESUPUESTO</span>

@@ -182,7 +182,7 @@ export default function PrintSheet({ proyecto }) {
 
             <div className="print-fiscal">
               <div className="print-fiscal-row"><span>Base imponible</span><span>{formatEur(base)}</span></div>
-              <p className="print-pending" style="margin-top: 4px;">IVA e IRPF se aplican al generar la factura.</p>
+              <p className="print-pending" style="margin-top: 4px; margin-bottom: 4px;">Indica cantidad no gravable</p>
               <div className="print-fiscal-total"><span>TOTAL PRESUPUESTO</span><span>{formatEur(base)}</span></div>
             </div>
           </>
