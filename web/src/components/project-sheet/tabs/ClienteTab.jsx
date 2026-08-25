@@ -92,12 +92,11 @@ function HistoryEntry({ entry, onRemove }) {
   )
 }
 
-function HistoryTwoColumns({ historico, onRemove }) {
-  // Split into two columns: left gets the older entries, right gets the newer ones.
-  // New entries (added during this session) appear in the right column on top.
-  const midPoint = Math.ceil(historico.length / 2)
-  const leftCol = historico.slice().reverse().slice(midPoint).reverse() // older half
-  const rightCol = historico.slice().reverse().slice(0, midPoint) // newer half (newest first)
+function HistoryTwoColumns({ historico, onRemove, idsIniciales }) {
+  // Left column: entries that existed before this session (iniciales).
+  // Right column: entries added during this session (nuevas), newest first.
+  const leftCol = historico.filter((e) => idsIniciales.has(e.id))
+  const rightCol = historico.filter((e) => !idsIniciales.has(e.id))
 
   return (
     <div className="bg-surface-card border border-brand-100 rounded-xl p-6">
@@ -150,6 +149,10 @@ export default function ClienteTab({ proyecto, onIrPlan }) {
   const [multimedia, setMultimedia] = useState(proyecto.multimedia || [])
   const [textoNota, setTextoNota] = useState('')
 
+  // Snapshot of the initial entry IDs so the history can split
+  // left (existing) vs right (newly added in this session).
+  const [idsIniciales] = useState(() => new Set((proyecto.multimedia || []).map((m) => m.id)))
+
   function syncMultimedia(nuevoMultimedia) {
     setMultimedia(nuevoMultimedia)
     updateProject(proyecto.id, { multimedia: nuevoMultimedia })
@@ -196,7 +199,7 @@ export default function ClienteTab({ proyecto, onIrPlan }) {
       <ProjectForm datos={datosProyecto} onChange={setDatosProyecto} errors={{}} />
 
       {/* History (two columns, on top) */}
-      <HistoryTwoColumns historico={multimedia} onRemove={removeMultimediaEntry} />
+      <HistoryTwoColumns historico={multimedia} onRemove={removeMultimediaEntry} idsIniciales={idsIniciales} />
 
       {/* Multimedia: images + voice notes */}
       <MediaUploader

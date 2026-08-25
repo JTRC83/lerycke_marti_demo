@@ -1,9 +1,7 @@
 import ImageDropzone from './ImageDropzone.jsx'
 import VoiceRecorder from './VoiceRecorder.jsx'
 
-// MediaUploader: container for the three input types (PRD 02b).
-// Texto is covered by the Observaciones field in ProjectForm; here we provide
-// imagenes (functional) and notas de voz (simulated).
+// MediaUploader: container for image dropzone + voice recorder in the same row.
 export default function MediaUploader({ imagenes, onAdd, onRemove }) {
   return (
     <div className="bg-surface-card border border-brand-100 rounded-xl p-6">
@@ -14,10 +12,11 @@ export default function MediaUploader({ imagenes, onAdd, onRemove }) {
         Sube imágenes y graba notas de voz. Todo queda en el histórico.
       </p>
 
-      <ImageDropzone imagenes={imagenes} onAdd={onAdd} onRemove={onRemove} />
-
-      <div className="mt-5">
-        <VoiceRecorder onAdd={onAdd} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <ImageDropzone imagenes={imagenes} onAdd={onAdd} onRemove={onRemove} />
+        <div className="flex flex-col">
+          <VoiceRecorder onAdd={onAdd} />
+        </div>
       </div>
     </div>
   )
