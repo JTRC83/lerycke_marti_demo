@@ -2,6 +2,17 @@ import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 
 // Inline SVG icon set (no external icon library).
+function IconDashboard() {
+  return (
+    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <rect x="3" y="3" width="7" height="9" rx="1" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="14" y="3" width="7" height="5" rx="1" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="14" y="12" width="7" height="9" rx="1" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="3" y="16" width="7" height="5" rx="1" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function IconProjects() {
   return (
     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -42,6 +53,7 @@ function IconRenders() {
 }
 
 const navItems = [
+  { to: '/dashboard-economico', label: 'Dashboard', Icon: IconDashboard },
   { to: '/dashboard', label: 'Proyectos', Icon: IconProjects },
   { to: '/clientes', label: 'Clientes', Icon: IconClients },
   { to: '/presupuestos', label: 'Presupuestos', Icon: IconBudgets },

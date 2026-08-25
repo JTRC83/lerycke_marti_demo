@@ -7,6 +7,7 @@ import { useProjects } from '../context/ProjectsContext.jsx'
 // Page title is derived from the current route.
 const titlesByPath = {
   '/dashboard': 'Proyectos',
+  '/dashboard-economico': 'Dashboard',
   '/clientes': 'Clientes',
   '/presupuestos': 'Presupuestos',
   '/renders': 'Renders',

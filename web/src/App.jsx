@@ -8,6 +8,7 @@ import ProjectSheetPage from './pages/ProjectSheetPage.jsx'
 import ClientesPage from './pages/ClientesPage.jsx'
 import PresupuestosPage from './pages/PresupuestosPage.jsx'
 import RendersPage from './pages/RendersPage.jsx'
+import DashboardEconomicoPage from './pages/DashboardEconomicoPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 
 // Placeholder for protected routes outside Part 1 scope.
@@ -67,6 +68,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <RendersPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dashboard-economico"
+        element={
+          <ProtectedRoute>
+            <DashboardEconomicoPage />
           </ProtectedRoute>
         }
       />
