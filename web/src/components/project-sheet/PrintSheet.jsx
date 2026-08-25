@@ -1,7 +1,7 @@
 import { getClienteObj, getClienteNombre, getCompletitud, getEstancias } from '../../utils/project.js'
 import { formatEur } from '../../data/projects.js'
 import { planMaestroMock } from '../../data/plan-maestro.js'
-import { presupuestoMock, importePartida, subtotalCapitulo, baseImponible, ivaImporte, totalPresupuesto } from '../../data/presupuesto.js'
+import { presupuestoMock, importePartida, subtotalCapitulo, baseImponible } from '../../data/presupuesto.js'
 import { rendersMock } from '../../data/renders.js'
 import { memoriaMock } from '../../data/memoria-calidades.js'
 
@@ -43,8 +43,6 @@ export default function PrintSheet({ proyecto }) {
   const renders = rendersMock
   const memoria = memoriaMock
   const base = baseImponible(presu)
-  const iva = ivaImporte(presu)
-  const total = totalPresupuesto(presu)
 
   return (
     <div className="print-sheet">
@@ -184,8 +182,8 @@ export default function PrintSheet({ proyecto }) {
 
             <div className="print-fiscal">
               <div className="print-fiscal-row"><span>Base imponible</span><span>{formatEur(base)}</span></div>
-              <div className="print-fiscal-row"><span>IVA ({presu.iva}%)</span><span>{formatEur(iva)}</span></div>
-              <div className="print-fiscal-total"><span>TOTAL</span><span>{formatEur(total)}</span></div>
+              <p className="print-pending" style="margin-top: 4px;">IVA e IRPF se aplican al generar la factura.</p>
+              <div className="print-fiscal-total"><span>TOTAL PRESUPUESTO</span><span>{formatEur(base)}</span></div>
             </div>
           </>
         ) : (
