@@ -1,7 +1,7 @@
 import ImageDropzone from './ImageDropzone.jsx'
 import VoiceRecorder from './VoiceRecorder.jsx'
 
-// MediaUploader: container for image dropzone + voice recorder in the same row.
+// MediaUploader: image dropzone on top, voice recorder below.
 export default function MediaUploader({ imagenes, onAdd, onRemove }) {
   return (
     <div className="bg-surface-card border border-brand-100 rounded-xl p-6">
@@ -12,11 +12,10 @@ export default function MediaUploader({ imagenes, onAdd, onRemove }) {
         Sube imágenes y graba notas de voz. Todo queda en el histórico.
       </p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <ImageDropzone imagenes={imagenes} onAdd={onAdd} onRemove={onRemove} />
-        <div className="flex flex-col">
-          <VoiceRecorder onAdd={onAdd} />
-        </div>
+      <ImageDropzone imagenes={imagenes} onAdd={onAdd} onRemove={onRemove} />
+
+      <div className="mt-5">
+        <VoiceRecorder onAdd={onAdd} />
       </div>
     </div>
   )
