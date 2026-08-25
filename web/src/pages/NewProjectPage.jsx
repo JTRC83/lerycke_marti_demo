@@ -202,23 +202,21 @@ export default function NewProjectPage() {
               <p className="text-xs text-surface-muted mb-3">
                 Escribe notas sobre la visita, peticiones del cliente o cualquier detalle relevante. Se añadirán al histórico.
               </p>
-              <div className="flex gap-3">
-                <textarea
-                  value={textoNota}
-                  onChange={(e) => setTextoNota(e.target.value)}
-                  placeholder="Ideas y sugerencias para complementar las peticiones del cliente..."
-                  rows={5}
-                  className="flex-1 px-3 py-2.5 rounded-xl border border-brand-200 bg-white text-brand-900 placeholder:text-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-500/30 transition resize-y"
-                />
-                <button
-                  type="button"
-                  onClick={addTextoNota}
-                  disabled={!textoNota.trim()}
-                  className="px-4 py-2.5 rounded-xl bg-brand-700 text-white text-sm font-medium hover:bg-brand-800 disabled:opacity-50 transition-colors self-start whitespace-nowrap"
-                >
-                  Añadir nota
-                </button>
-              </div>
+              <textarea
+                value={textoNota}
+                onChange={(e) => setTextoNota(e.target.value)}
+                placeholder="Ideas y sugerencias para complementar las peticiones del cliente..."
+                rows={8}
+                className="w-full px-3 py-2.5 rounded-xl border border-brand-200 bg-white text-brand-900 placeholder:text-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-500/30 transition resize-y"
+              />
+              <button
+                type="button"
+                onClick={addTextoNota}
+                disabled={!textoNota.trim()}
+                className="mt-3 px-4 py-2.5 rounded-xl bg-brand-700 text-white text-sm font-medium hover:bg-brand-800 disabled:opacity-50 transition-colors"
+              >
+                Añadir nota
+              </button>
             </div>
           </div>
 
