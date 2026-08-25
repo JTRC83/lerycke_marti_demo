@@ -106,8 +106,12 @@ function HistoryTwoColumns({ historico, onRemove, idsIniciales }) {
         </p>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left column: older entries */}
+          {/* Left column: existing entries from before */}
           <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-2 h-2 rounded-full bg-brand-400" />
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-surface-muted">Documentos previos</h4>
+            </div>
             {leftCol.length > 0 ? (
               <div>
                 {leftCol.map((entry) => (
@@ -115,11 +119,15 @@ function HistoryTwoColumns({ historico, onRemove, idsIniciales }) {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-surface-muted">—</p>
+              <p className="text-xs text-surface-muted">Sin documentos previos</p>
             )}
           </div>
-          {/* Right column: newer entries (newest on top) */}
+          {/* Right column: entries added in this session */}
           <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-2 h-2 rounded-full bg-state-success" />
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-surface-muted">Nuevos documentos</h4>
+            </div>
             {rightCol.length > 0 ? (
               <div>
                 {rightCol.map((entry) => (
@@ -127,7 +135,7 @@ function HistoryTwoColumns({ historico, onRemove, idsIniciales }) {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-surface-muted">—</p>
+              <p className="text-xs text-surface-muted">Sin documentos nuevos</p>
             )}
           </div>
         </div>
