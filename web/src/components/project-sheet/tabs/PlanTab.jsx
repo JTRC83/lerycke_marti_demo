@@ -480,6 +480,7 @@ export default function PlanTab({ proyecto, onTabChange }) {
   const [seleccionados, setSeleccionados] = useState(() => new Set((proyecto.multimedia || []).map((m) => m.id)))
   const [respuestas, setRespuestas] = useState({})
   const [cargandoPlan, setCargandoPlan] = useState(false)
+  const [textoNota, setTextoNota] = useState('')
 
   function toggleSeleccion(id) {
     setSeleccionados((prev) => {
@@ -510,6 +511,13 @@ export default function PlanTab({ proyecto, onTabChange }) {
       next.delete(id)
       return next
     })
+  }
+
+  function addTextoNota() {
+    const texto = textoNota.trim()
+    if (!texto) return
+    addMultimediaEntry({ tipo: 'texto', contenido: { texto } })
+    setTextoNota('')
   }
 
   function handleGenerarDocumento() {
@@ -590,6 +598,29 @@ export default function PlanTab({ proyecto, onTabChange }) {
           onAdd={addMultimediaEntry}
           onRemove={removeMultimediaEntry}
         />
+      </div>
+
+      {/* Notas de texto */}
+      <div className="bg-surface-card border border-brand-100 rounded-xl p-6">
+        <h4 className="text-sm font-semibold text-brand-900 mb-1">Notas de texto</h4>
+        <p className="text-xs text-surface-muted mb-3">
+          Ideas y sugerencias para complementar las peticiones del cliente. Se añadirán al histórico.
+        </p>
+        <textarea
+          value={textoNota}
+          onChange={(e) => setTextoNota(e.target.value)}
+          placeholder="Ideas y sugerencias para complementar las peticiones del cliente..."
+          rows={8}
+          className="w-full px-3 py-2.5 rounded-xl border border-brand-200 bg-white text-brand-900 placeholder:text-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-500/30 transition resize-y"
+        />
+        <button
+          type="button"
+          onClick={addTextoNota}
+          disabled={!textoNota.trim()}
+          className="mt-3 px-4 py-2.5 rounded-xl bg-brand-700 text-white text-sm font-medium hover:bg-brand-800 disabled:opacity-50 transition-colors"
+        >
+          Añadir nota
+        </button>
       </div>
 
       {/* Chat IA */}
