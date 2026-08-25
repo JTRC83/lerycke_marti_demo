@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useProjects } from '../../../context/ProjectsContext.jsx'
-import ProjectForm from '../../new-project/ProjectForm.jsx'
 import MediaUploader from '../../new-project/MediaUploader.jsx'
 import { getClienteObj, getClienteNombre } from '../../../utils/project.js'
 import { medId, formatFechaEs } from '../../../utils/format.js'
@@ -140,12 +139,6 @@ function HistoryTwoColumns({ historico, onRemove, idsIniciales }) {
 export default function ClienteTab({ proyecto, onIrPlan }) {
   const { updateProject } = useProjects()
   const cliente = getClienteObj(proyecto)
-  const [datosProyecto, setDatosProyecto] = useState({
-    nombre: proyecto.nombre || '',
-    tipo: proyecto.tipo || '',
-    estilo: proyecto.estilo || '',
-    observacionesCliente: proyecto.observacionesCliente || '',
-  })
   const [multimedia, setMultimedia] = useState(proyecto.multimedia || [])
   const [textoNota, setTextoNota] = useState('')
 
@@ -195,8 +188,16 @@ export default function ClienteTab({ proyecto, onIrPlan }) {
         </div>
       </div>
 
-      {/* Project data (editable, preloaded) */}
-      <ProjectForm datos={datosProyecto} onChange={setDatosProyecto} errors={{}} />
+      {/* Project data (read-only) */}
+      <div className="bg-surface-card border border-brand-100 rounded-xl p-6">
+        <h3 className="text-base font-semibold text-brand-900 mb-5">Datos del proyecto</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <ReadOnlyField label="Nombre del proyecto" value={proyecto.nombre} />
+          <ReadOnlyField label="Tipo de proyecto" value={proyecto.tipo} />
+          <ReadOnlyField label="Estilo / concepto" value={proyecto.estilo} />
+          <ReadOnlyField label="Observaciones" value={proyecto.observacionesCliente} />
+        </div>
+      </div>
 
       {/* History (two columns, on top) */}
       <HistoryTwoColumns historico={multimedia} onRemove={removeMultimediaEntry} idsIniciales={idsIniciales} />
