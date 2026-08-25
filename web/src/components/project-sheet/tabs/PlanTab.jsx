@@ -89,9 +89,9 @@ function ChatIA({ respuestas, setRespuestas, onGenerarDocumento, docGenerado }) 
     <div className="bg-surface-card border border-brand-100 rounded-xl p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h4 className="text-sm font-semibold text-brand-900">Chat IA — Documento maestro</h4>
+          <h4 className="text-sm font-semibold text-brand-900">Chat IA — Plan maestro</h4>
           <p className="text-xs text-surface-muted mt-0.5">
-            Responde las preguntas para que la IA genere el documento maestro del proyecto.
+            Responde las preguntas para que la IA genere el plan maestro del proyecto.
           </p>
         </div>
         <span className="px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-medium">
@@ -163,7 +163,7 @@ function ChatIA({ respuestas, setRespuestas, onGenerarDocumento, docGenerado }) 
               }}
               className="px-4 py-2 rounded-xl bg-brand-700 text-white text-sm font-medium hover:bg-brand-800 transition-colors"
             >
-              Generar documento maestro
+              Generar plan maestro con IA
             </button>
           ) : (
             <button
@@ -521,7 +521,7 @@ export default function PlanTab({ proyecto, onTabChange }) {
   }
 
   function handleGenerarDocumento() {
-    setFase('documento')
+    handleGenerarPlan()
   }
 
   async function handleGenerarPlan() {
@@ -541,19 +541,7 @@ export default function PlanTab({ proyecto, onTabChange }) {
     return <PlanGenerated proyecto={proyecto} onVerify={handleVerify} />
   }
 
-  // --- Vista: documento maestro ---
-  if (fase === 'documento') {
-    return (
-      <DocumentoMaestro
-        respuestas={respuestas}
-        onRegenerar={() => setFase('input')}
-        onGenerarPlan={handleGenerarPlan}
-        cargandoPlan={cargandoPlan}
-      />
-    )
-  }
-
-  // --- Vista: input (histórico + referencias + chat) ---
+  // --- Vista: input (histórico + referencias + notas + chat) ---
   return (
     <div className="space-y-5">
       <div>
