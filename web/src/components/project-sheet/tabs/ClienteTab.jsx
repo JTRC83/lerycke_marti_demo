@@ -79,6 +79,9 @@ export default function ClienteTab({ proyecto, onIrPlan }) {
       {/* Project data (editable, preloaded) */}
       <ProjectForm datos={datosProyecto} onChange={setDatosProyecto} errors={{}} />
 
+      {/* History (on top) */}
+      <TimelineMedia historico={multimedia} onRemove={removeMultimediaEntry} />
+
       {/* Multimedia: images + voice notes */}
       <MediaUploader
         imagenes={multimedia.filter((m) => m.tipo === 'imagen')}
