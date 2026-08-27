@@ -14,7 +14,7 @@ export const projects = [
     estilo: 'Rústico mediterráneo',
     estado: 'borrador',
     docs: {
-      presupuesto: true,
+      presupuesto: false,
       plan: false,
       memoria: false,
       renders: { generados: 3, total: 4 },
@@ -52,7 +52,7 @@ export const projects = [
     estilo: 'Diseño de interiores',
     estado: 'borrador',
     docs: {
-      presupuesto: true,
+      presupuesto: false,
       plan: false,
       memoria: false,
       renders: { generados: 1, total: 4 },

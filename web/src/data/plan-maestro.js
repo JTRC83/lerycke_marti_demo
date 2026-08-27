@@ -23,7 +23,19 @@ export const planMaestroMock = {
   ],
   analisisEstilo:
     'Rústico mediterráneo con materiales naturales: porcelánico arcilla, microcemento en baños, madera maciza en mobiliario, vigas vistas. Paleta en tonos terracota, arena y blanco calizo. Iluminación cálida 2700-3000K.',
-  presupuestoEstimado: 42000,
+  estimacionCostes: 42000,
+  desgloseCostes: [
+    { id: 'est-d-01', concepto: 'Demolición y retirada de escombros', importe: 2800 },
+    { id: 'est-d-02', concepto: 'Albañilería y tabiquería', importe: 8500 },
+    { id: 'est-d-03', concepto: 'Fontanería y saneamiento', importe: 3200 },
+    { id: 'est-d-04', concepto: 'Electricidad e iluminación', importe: 2800 },
+    { id: 'est-d-05', concepto: 'Carpintería (puertas y ventanas)', importe: 6200 },
+    { id: 'est-d-06', concepto: 'Pavimentos y revestimientos', importe: 5500 },
+    { id: 'est-d-07', concepto: 'Pintura y microcemento', importe: 2100 },
+    { id: 'est-d-08', concepto: 'Sanitarios y grifería', importe: 3400 },
+    { id: 'est-d-09', concepto: 'Mobiliario a medida', importe: 4800 },
+    { id: 'est-d-10', concepto: 'Honorarios de diseño y dirección de obra', importe: 2700 },
+  ],
   m2Totales: 136.3,
 }
 

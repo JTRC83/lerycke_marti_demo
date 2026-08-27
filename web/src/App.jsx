@@ -10,17 +10,8 @@ import PresupuestosPage from './pages/PresupuestosPage.jsx'
 import RendersPage from './pages/RendersPage.jsx'
 import DashboardEconomicoPage from './pages/DashboardEconomicoPage.jsx'
 import MaterialesPage from './pages/MaterialesPage.jsx'
+import ChatIaPage from './pages/ChatIaPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
-
-// Placeholder for protected routes outside Part 1 scope.
-function ComingSoon({ title }) {
-  return (
-    <div className="flex flex-col items-center justify-center text-center py-20">
-      <h2 className="text-2xl font-semibold text-brand-800">{title}</h2>
-      <p className="mt-2 text-surface-muted">Próximamente</p>
-    </div>
-  )
-}
 
 // Wraps a page with the protected AppShell layout.
 function ProtectedRoute({ children }) {
@@ -101,6 +92,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <ProjectSheetPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/ia"
+        element={
+          <ProtectedRoute>
+            <ChatIaPage />
           </ProtectedRoute>
         }
       />

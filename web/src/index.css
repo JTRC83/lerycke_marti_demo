@@ -21,21 +21,27 @@ body {
   display: none;
 }
 
+/* print-sheet-wrap is hidden on screen */
+.print-sheet-wrap {
+  display: none;
+}
+
 @media print {
-  /* Hide the app chrome and interactive sheet */
+  /* Hide the app chrome and interactive content */
   body.printing-sheet aside,
   body.printing-sheet header,
-  body.printing-sheet nav,
-  body.printing-sheet .lg\:pl-64 > div:not(.print-sheet-wrap) {
+  body.printing-sheet nav {
     display: none !important;
   }
 
-  body.printing-sheet .print-sheet-wrap {
-    display: block !important;
-  }
-
+  /* Hide the interactive sheet content */
   body.printing-sheet .print-hide {
     display: none !important;
+  }
+
+  /* Show the print-only sheet */
+  body.printing-sheet .print-sheet-wrap {
+    display: block !important;
   }
 
   body.printing-sheet {
@@ -140,6 +146,69 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .print-section-body {
+    page-break-inside: auto;
+  }
+
+  /* Evitar que un título quede solo al final de página */
+  .print-capitulo,
+  .print-memoria-section-editorial,
+  .print-memoria-intro,
+  .print-plan-hero,
+  .print-fiscal,
+  .print-memoria-footer {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-cap-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a3a2a;
+    margin-bottom: 6px;
+    padding: 4px 8px;
+    background: #f0f4f1;
+    border-radius: 4px;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .print-memoria-section-header {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .print-memoria-material-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-render-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-metric,
+  .print-material {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-table {
+    page-break-inside: auto;
+  }
+
+  .print-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-table thead {
+    display: table-header-group;
   }
 
   .print-section-num {
@@ -257,16 +326,7 @@ body {
   .print-capitulo {
     margin-bottom: 12px;
     page-break-inside: avoid;
-  }
-
-  .print-cap-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a3a2a;
-    margin-bottom: 6px;
-    padding: 4px 8px;
-    background: #f0f4f1;
-    border-radius: 4px;
+    break-inside: avoid;
   }
 
   .print-materials {
@@ -344,37 +404,223 @@ body {
   .print-render-info p { font-size: 10px; margin: 1px 0; color: #4b5563; }
   .print-render-materials { margin-top: 4px; }
 
-  .print-memoria {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+  /* === Plan maestro — hero image === */
+  .print-plan-hero {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
   }
 
-  .print-memoria-sec { }
-  .print-memoria-title {
-    font-size: 12px;
+  .print-plan-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .print-plan-hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(26, 58, 42, 0.8));
+    padding: 12px 16px;
+  }
+
+  .print-plan-hero-label {
+    color: #fff;
+    font-size: 14px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin: 0;
+  }
+
+  .print-plan-hero-sub {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 10px;
+    margin: 2px 0 0;
+  }
+
+  .print-plan-secondary-img {
+    margin-top: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .print-plan-secondary-render {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .print-plan-secondary-caption {
+    font-size: 9px;
+    color: #6b7280;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* === Memoria de calidades — editorial layout === */
+  .print-memoria-intro {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+  }
+
+  .print-memoria-intro-img {
+    width: 45%;
+    height: 120px;
+    object-fit: cover;
+  }
+
+  .print-memoria-intro-text {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .print-memoria-intro-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a3a2a;
+    margin: 0 0 6px;
+  }
+
+  .print-memoria-intro-desc {
+    font-size: 11px;
+    color: #4b5563;
+    line-height: 1.5;
+    margin: 0 0 8px;
+  }
+
+  .print-memoria-intro-meta {
+    font-size: 10px;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .print-memoria-editorial {
+    page-break-inside: auto;
+  }
+
+  .print-memoria-section-editorial {
+    margin-bottom: 20px;
+    page-break-inside: avoid;
+  }
+
+  .print-memoria-section-header {
     display: flex;
     align-items: center;
-    gap: 6px;
-  }
-  .print-memoria-num {
-    font-size: 9px;
-    background: #1a3a2a;
-    color: #fff;
-    padding: 2px 5px;
-    border-radius: 3px;
+    gap: 8px;
+    margin-bottom: 10px;
   }
 
-  .print-memoria-ficha {
-    padding: 6px 0;
-    border-bottom: 1px solid #f3f4f6;
+  .print-memoria-section-num {
+    font-size: 10px;
+    background: #1a3a2a;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
   }
-  .print-memoria-nombre { display: block; font-size: 11px; font-weight: 600; color: #1a3a2a; }
-  .print-memoria-marca { display: block; font-size: 10px; color: #6b7280; }
-  .print-memoria-desc { display: block; font-size: 10px; color: #374151; margin-top: 2px; }
-  .print-memoria-ubi { display: block; font-size: 9px; color: #6b7280; margin-top: 2px; }
+
+  .print-memoria-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a3a2a;
+    margin: 0;
+  }
+
+  .print-memoria-section-line {
+    flex: 1;
+    height: 1px;
+    background: #d1d5db;
+  }
+
+  .print-memoria-materials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .print-memoria-material-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .print-memoria-material-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .print-memoria-material-body {
+    padding: 8px;
+  }
+
+  .print-memoria-material-nombre {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1a3a2a;
+  }
+
+  .print-memoria-material-marca {
+    display: block;
+    font-size: 10px;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+
+  .print-memoria-material-desc {
+    display: block;
+    font-size: 10px;
+    color: #374151;
+    line-height: 1.4;
+    margin-top: 4px;
+  }
+
+  .print-memoria-material-ubi {
+    display: block;
+    font-size: 9px;
+    color: #6b7280;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  .print-memoria-footer {
+    margin-top: 24px;
+    padding: 16px;
+    background: #f0f4f1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .print-memoria-footer-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+  }
+
+  .print-memoria-footer-text {
+    font-size: 9px;
+    color: #4b5563;
+    line-height: 1.4;
+    margin: 0;
+  }
 
   .print-pending {
     font-size: 11px;

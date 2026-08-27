@@ -82,7 +82,7 @@ export default function ResumenTab({ proyecto }) {
 
       {/* 4 metric cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <Card valor={proyecto.presupuestoTotal != null ? formatEur(proyecto.presupuestoTotal) : '—'} etiqueta="Presupuesto total" />
+        <Card valor={proyecto.presupuestoTotal != null ? formatEur(proyecto.presupuestoTotal) : '—'} etiqueta="Estimación de presupuesto" />
         <Card valor={`${renders.generados} generados`} etiqueta="Renders" />
         <Card valor={`${memoriaCategorias} categorías`} etiqueta="Memoria" />
         <Card valor={estancias} etiqueta="Estancias" />

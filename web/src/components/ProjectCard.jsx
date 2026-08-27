@@ -152,7 +152,7 @@ export default function ProjectCard({ project }) {
       <DocumentChecklist docs={project.docs} />
 
       <div className="mt-4 pt-4 border-t border-brand-100 flex items-end justify-between">
-        <span className="text-xs uppercase tracking-wider text-surface-muted">Presupuesto total</span>
+        <span className="text-xs uppercase tracking-wider text-surface-muted">Estimación de presupuesto</span>
         <span className="text-xl font-bold text-brand-900">
           {project.presupuestoTotal == null ? '—' : formatEur(project.presupuestoTotal)}
         </span>

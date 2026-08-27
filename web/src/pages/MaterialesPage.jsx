@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { useMateriales } from '../context/MaterialesContext.jsx'
 import { CATEGORIAS_MATERIALES } from '../data/materiales.js'
 import { formatEur } from '../data/projects.js'
@@ -13,14 +13,61 @@ const EMPTY_FORM = {
   precio: '',
   unidad: 'm²',
   descripcion: '',
+  imagen: '',
 }
 
 const UNIDADES = ['m²', 'ud', 'm', 'lote', 'mes']
 
+// MaterialRow con tooltip de imagen al pasar sobre el nombre.
+// El tooltip usa position:fixed + flip vertical para que no lo recorte el
+// contenedor con overflow (filas del final de la lista).
 function MaterialRow({ material, onEdit, onDelete }) {
+  const [showTip, setShowTip] = useState(false)
+  const [tipPos, setTipPos] = useState({ top: 0, left: 0 })
+  const anchorRef = useRef(null)
+
+  const TIP_W = 160 // w-40
+  const TIP_H = 190 // imagen 160 + caption
+
+  function handleEnter() {
+    const anchor = anchorRef.current
+    if (anchor) {
+      const rect = anchor.getBoundingClientRect()
+      let top = rect.bottom + 8
+      // si no cabe debajo, mostrar encima
+      if (top + TIP_H > window.innerHeight) {
+        top = rect.top - TIP_H - 8
+      }
+      let left = rect.left
+      if (left + TIP_W > window.innerWidth - 8) {
+        left = window.innerWidth - TIP_W - 8
+      }
+      setTipPos({ top, left })
+    }
+    setShowTip(true)
+  }
+
   return (
     <tr className="border-b border-brand-50 last:border-0 hover:bg-brand-50/30 transition-colors">
-      <td className="px-3 py-2.5 text-sm font-medium text-brand-900">{material.nombre}</td>
+      <td className="px-3 py-2.5 text-sm font-medium text-brand-900">
+        <div
+          ref={anchorRef}
+          className="relative inline-block"
+          onMouseEnter={handleEnter}
+          onMouseLeave={() => setShowTip(false)}
+        >
+          <span className="cursor-default">{material.nombre}</span>
+        </div>
+        {showTip && material.imagen ? (
+          <div
+            className="fixed z-[100] w-40 rounded-xl overflow-hidden shadow-xl border border-brand-100 bg-white pointer-events-none"
+            style={{ top: tipPos.top, left: tipPos.left }}
+          >
+            <img src={material.imagen} alt={material.nombre} className="w-40 h-40 object-cover" />
+            <div className="px-2 py-1.5 text-[11px] text-brand-800 truncate">{material.nombre}</div>
+          </div>
+        ) : null}
+      </td>
       <td className="px-3 py-2.5">
         <span className="px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 text-xs font-medium">{material.categoria}</span>
       </td>
@@ -49,6 +96,40 @@ function MaterialRow({ material, onEdit, onDelete }) {
         </div>
       </td>
     </tr>
+  )
+}
+
+// Vista tipo card con foto grande del material.
+function MaterialCard({ material, onEdit, onDelete }) {
+  return (
+    <div className="bg-surface-card border border-brand-100 rounded-xl overflow-hidden hover:border-brand-300 hover:shadow-sm transition-all">
+      <div className="aspect-square overflow-hidden bg-brand-50">
+        {material.imagen ? (
+          <img src={material.imagen} alt={material.nombre} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-surface-muted text-xs">Sin imagen</div>
+        )}
+      </div>
+      <div className="p-4">
+        <div className="flex items-start justify-between gap-2">
+          <h4 className="text-sm font-semibold text-brand-900 leading-snug">{material.nombre}</h4>
+          <span className="shrink-0 px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 text-[11px] font-medium">{material.categoria}</span>
+        </div>
+        <p className="mt-1 text-xs text-surface-muted">{material.marca} · {material.modelo}</p>
+        {material.descripcion ? <p className="mt-1.5 text-xs text-brand-800 line-clamp-2">{material.descripcion}</p> : null}
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <span className="text-sm font-bold text-brand-900">{formatEur(material.precio)}<span className="text-[11px] font-normal text-surface-muted">/{material.unidad}</span></span>
+          <div className="flex items-center gap-1">
+            <button type="button" onClick={() => onEdit(material)} className="w-7 h-7 rounded-lg text-brand-700 hover:bg-brand-50 flex items-center justify-center transition-colors" title="Editar">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 20h9" strokeLinecap="round" strokeLinejoin="round" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+            <button type="button" onClick={() => onDelete(material)} className="w-7 h-7 rounded-lg text-surface-muted hover:text-state-danger hover:bg-red-50 flex items-center justify-center transition-colors" title="Eliminar">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -180,6 +261,49 @@ function MaterialModal({ material, onClose, onGuardar, categorias }) {
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-brand-800 mb-1">Imagen del material</label>
+            {form.imagen ? (
+              <div className="mb-3 flex items-center gap-3">
+                <img
+                  src={form.imagen}
+                  alt="Vista previa"
+                  className="w-20 h-20 rounded-lg object-cover border border-brand-100"
+                />
+                <button
+                  type="button"
+                  onClick={() => updateField('imagen', '')}
+                  className="text-xs text-surface-muted hover:text-state-danger"
+                >
+                  Quitar imagen
+                </button>
+              </div>
+            ) : null}
+            <label className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-dashed border-brand-300 bg-surface-base text-sm text-brand-700 cursor-pointer hover:bg-brand-50 transition-colors">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 5v14M5 12h14" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              {form.imagen ? 'Cambiar imagen' : 'Subir imagen'}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) updateField('imagen', URL.createObjectURL(file))
+                }}
+              />
+            </label>
+            <input
+              type="text"
+              value={form.imagen.startsWith('blob:') ? '' : form.imagen}
+              onChange={(e) => updateField('imagen', e.target.value)}
+              placeholder="O pega una URL de imagen (https://...)"
+              className="mt-2 w-full px-3 py-2.5 rounded-xl border border-brand-200 bg-white text-brand-900 placeholder:text-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-500/30 transition"
+            />
+            <p className="mt-1 text-[11px] text-surface-muted">
+              Si no pones imagen, el material aparecerá sin foto en la vista de cards.
+            </p>
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-brand-800 mb-1">Descripción</label>
             <textarea
               value={form.descripcion}
@@ -253,6 +377,7 @@ export default function MaterialesPage() {
   const [filtroCategoria, setFiltroCategoria] = useState('')
   const [modalAbierto, setModalAbierto] = useState(null) // null | 'nuevo' | material
   const [materialEliminar, setMaterialEliminar] = useState(null)
+  const [vista, setVista] = useState('lista') // 'lista' | 'cards'
 
   // Filtered materials
   const filtrados = useMemo(() => {
@@ -356,19 +481,37 @@ export default function MaterialesPage() {
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Counter */}
+      {/* Counter + vista toggle */}
+      <div className="flex items-center justify-between gap-3">
         <p className="text-xs text-surface-muted">
           Mostrando {filtrados.length} de {materiales.length} materiales
         </p>
+        <div className="inline-flex rounded-lg border border-brand-100 bg-surface-card p-0.5">
+          <button
+            type="button"
+            onClick={() => setVista('lista')}
+            className={vista === 'lista' ? 'px-3 py-1 rounded-md text-xs font-medium bg-brand-700 text-white transition-colors' : 'px-3 py-1 rounded-md text-xs font-medium text-brand-800 hover:bg-brand-50 transition-colors'}
+          >
+            Lista
+          </button>
+          <button
+            type="button"
+            onClick={() => setVista('cards')}
+            className={vista === 'cards' ? 'px-3 py-1 rounded-md text-xs font-medium bg-brand-700 text-white transition-colors' : 'px-3 py-1 rounded-md text-xs font-medium text-brand-800 hover:bg-brand-50 transition-colors'}
+          >
+            Cards
+          </button>
+        </div>
       </div>
 
-      {/* Table */}
+      {/* Resultado */}
       {filtrados.length === 0 ? (
         <div className="text-center py-12 text-sm text-surface-muted">
           No hay materiales que coincidan con los filtros.
         </div>
-      ) : (
+      ) : vista === 'lista' ? (
         <div className="bg-surface-card border border-brand-100 rounded-xl overflow-hidden overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -388,6 +531,12 @@ export default function MaterialesPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {filtrados.map((m) => (
+            <MaterialCard key={m.id} material={m} onEdit={setModalAbierto} onDelete={handleEliminar} />
+          ))}
         </div>
       )}
 

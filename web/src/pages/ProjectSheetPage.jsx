@@ -31,14 +31,18 @@ export default function ProjectSheetPage() {
   // Toggle a print-layout class on body during export so the @media print CSS
   // hides the sidebar/topbar/tabs and shows only the PrintSheet. It is removed after.
   function handleExport() {
-    setExportando(true)
+    // Add the class so CSS hides interactive content and shows the print sheet.
     document.body.classList.add('printing-sheet')
-    // Let React render with the class, then open the print dialog.
-    setTimeout(() => {
-      window.print()
-      document.body.classList.remove('printing-sheet')
-      setExportando(false)
-    }, 100)
+    // Wait for the browser to paint the print layout.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.print()
+        // Cleanup after the print dialog closes.
+        setTimeout(() => {
+          document.body.classList.remove('printing-sheet')
+        }, 200)
+      })
+    })
   }
 
   if (!proyecto) {
@@ -52,7 +56,7 @@ export default function ProjectSheetPage() {
   return (
     <div className="space-y-5">
       {/* Interactive sheet (hidden when printing) */}
-      <div className={exportando ? 'print-hide' : ''}>
+      <div className="print-hide">
         <SheetHeader proyecto={proyectoConLabel} onExport={handleExport} exportando={exportando} />
 
         <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-5">
@@ -70,12 +74,10 @@ export default function ProjectSheetPage() {
         </div>
       </div>
 
-      {/* Print-only professional sheet (hidden on screen, shown when printing) */}
-      {exportando ? (
-        <div className="print-sheet-wrap" style={{ display: 'none' }}>
-          <PrintSheet proyecto={proyecto} />
-        </div>
-      ) : null}
+      {/* Print-only professional sheet (always in DOM, hidden on screen via CSS) */}
+      <div className="print-sheet-wrap">
+        <PrintSheet proyecto={proyecto} seccionActiva={pestanaActiva} />
+      </div>
     </div>
   )
 }

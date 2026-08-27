@@ -6,7 +6,7 @@ import { formatEur } from '../../../data/projects.js'
 // PresupuestoTab: editable budget with chapters, items, add/edit/delete.
 // No IVA here — IVA and IRPF go on the invoice (factura), not the presupuesto.
 
-function PresupuestoEmpty({ onGenerate }) {
+function PresupuestoEmpty({ onGenerate, planVerificado }) {
   const [cargando, setCargando] = useState(false)
 
   async function handleGenerate() {
@@ -22,15 +22,23 @@ function PresupuestoEmpty({ onGenerate }) {
         <h3 className="text-lg font-semibold text-brand-900">Presupuesto</h3>
         <span className="px-3 py-1 rounded-full bg-surface-base text-surface-muted text-xs font-medium">No generado</span>
       </div>
-      <p className="text-sm text-surface-muted">El presupuesto se genera a partir del plan maestro verificado.</p>
-      <button
-        type="button"
-        onClick={handleGenerate}
-        disabled={cargando}
-        className="px-5 py-2.5 rounded-xl bg-brand-700 text-white text-sm font-medium hover:bg-brand-800 disabled:opacity-60 transition-colors"
-      >
-        {cargando ? 'Generando presupuesto...' : 'Generar presupuesto'}
-      </button>
+      {planVerificado ? (
+        <>
+          <p className="text-sm text-surface-muted">El presupuesto se genera a partir del plan maestro verificado.</p>
+          <button
+            type="button"
+            onClick={handleGenerate}
+            disabled={cargando}
+            className="px-5 py-2.5 rounded-xl bg-brand-700 text-white text-sm font-medium hover:bg-brand-800 disabled:opacity-60 transition-colors"
+          >
+            {cargando ? 'Generando presupuesto...' : 'Generar presupuesto'}
+          </button>
+        </>
+      ) : (
+        <p className="text-sm text-surface-muted">
+          Debes verificar el plan maestro antes de generar el presupuesto.
+        </p>
+      )}
     </div>
   )
 }
@@ -111,7 +119,7 @@ function CapituloEditable({ cap, onChange, onDelete }) {
     const ref = `${cap.id.charAt(cap.id.indexOf('-') + 1).toUpperCase()}-${String(cap.partidas.length + 1).padStart(2, '0')}`
     onChange({
       ...cap,
-      partidas: [...cap.partidas, { ref, descripcion: '', ud: 'm²', cantidad: 1, precio: 0 }],
+      partidas: [...cap.partidas, { id: `par-${Date.now()}`, ref, descripcion: '', ud: 'm²', cantidad: 1, precio: 0 }],
     })
   }
 
@@ -152,7 +160,7 @@ function CapituloEditable({ cap, onChange, onDelete }) {
           <tbody>
             {cap.partidas.map((p, idx) => (
               <EditablePartida
-                key={idx}
+                key={p.id || `p-${idx}`}
                 partida={p}
                 onChange={(nueva) => updatePartida(idx, nueva)}
                 onDelete={() => deletePartida(idx)}
@@ -192,7 +200,23 @@ function PresupuestoGenerated({ proyecto, onVerify }) {
 
   function addCapitulo() {
     const id = `cap-${Date.now()}`
-    setCapitulos((prev) => [...prev, { id, nombre: 'NUEVO CAPÍTULO', partidas: [] }])
+    setCapitulos((prev) => [
+      ...prev,
+      {
+        id,
+        nombre: 'NUEVO CAPÍTULO',
+        partidas: [
+          {
+            id: `par-${Date.now()}`,
+            ref: 'E-01',
+            descripcion: '',
+            ud: 'm²',
+            cantidad: 1,
+            precio: 0,
+          },
+        ],
+      },
+    ])
   }
 
   // Base imponible = suma de subtotales (sin IVA — el IVA va en la factura)
@@ -265,13 +289,15 @@ function PresupuestoGenerated({ proyecto, onVerify }) {
 export default function PresupuestoTab({ proyecto }) {
   const { updateProject } = useProjects()
   const [generado, setGenerado] = useState(proyecto.docs?.presupuesto === true)
+  const planVerificado = proyecto.docs?.plan === true
 
   function handleVerify() {
-    updateProject(proyecto.id, { docs: { ...proyecto.docs, presupuesto: true } })
+    const docs = proyecto.docs || {}
+    updateProject(proyecto.id, { docs: { ...docs, presupuesto: true } })
   }
 
   if (!generado) {
-    return <PresupuestoEmpty onGenerate={() => setGenerado(true)} />
+    return <PresupuestoEmpty onGenerate={() => setGenerado(true)} planVerificado={planVerificado} />
   }
   return <PresupuestoGenerated proyecto={proyecto} onVerify={handleVerify} />
 }
