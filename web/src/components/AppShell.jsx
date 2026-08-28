@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import Sidebar from './Sidebar.jsx'
 import Topbar from './Topbar.jsx'
 import { useProjects } from '../context/ProjectsContext.jsx'
@@ -35,13 +36,14 @@ function usePageTitle() {
 
 export default function AppShell({ children }) {
   const title = usePageTitle()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="min-h-screen bg-surface-base">
-      <Sidebar />
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="lg:pl-64 flex flex-col min-h-screen">
-        <Topbar title={title} />
-        <main className="flex-1 p-6 lg:p-8">
+        <Topbar title={title} onMenuClick={() => setSidebarOpen(true)} />
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
           {children}
         </main>
       </div>

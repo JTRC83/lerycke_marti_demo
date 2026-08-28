@@ -175,7 +175,7 @@ export default function PrintSheet({ proyecto, seccionActiva }) {
           </Seccion>
 
           {/* Resumen del presupuesto */}
-          <Seccion numero="03" titulo="Resumen del presupuesto">
+          <Seccion numero="03" titulo="Resumen del presupuesto" className="print-page-break">
             {completitud.presupuesto ? (
               <>
                 <div className="print-info-grid">

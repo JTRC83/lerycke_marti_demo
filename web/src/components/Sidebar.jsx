@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 
+// ... (icons remain unchanged)
+
 // Inline SVG icon set (no external icon library).
 function IconDashboard() {
   return (
@@ -80,64 +82,83 @@ const navItems = [
   { to: '/ia', label: 'IA', Icon: IconIa },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ open = false, onClose }) {
   const { user, logout } = useAuth()
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 w-64 bg-brand-900 text-white flex flex-col">
-      {/* Brand block */}
-      <div className="py-6 border-b border-white/10">
-        <img
-          src="/brand/LOGOpinche-web_COMPLETO.jpg"
-          alt="LERYCKEMARTI"
-          className="block w-full h-auto"
+    <>
+      {/* Overlay dimmed solo en móvil */}
+      {open ? (
+        <button
+          type="button"
+          aria-label="Cerrar menú"
+          className="fixed inset-0 z-20 bg-black/50 lg:hidden"
+          onClick={onClose}
         />
-      </div>
+      ) : null}
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map(({ to, label, Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              [
-                'flex items-center gap-3 px-3 py-2.5 rounded text-sm transition-colors',
-                isActive
-                  ? 'bg-white/10 text-white'
-                  : 'text-white/70 hover:text-white hover:bg-white/5',
-              ].join(' ')
-            }
-          >
-            <Icon />
-            <span>{label}</span>
-          </NavLink>
-        ))}
-      </nav>
-
-      {/* User + logout */}
-      <div className="px-4 py-4 border-t border-white/10">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-brand-600 flex items-center justify-center text-sm font-semibold">
-            {user?.nombre?.charAt(0) ?? 'L'}
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium truncate">{user?.nombre ?? 'Lerycke'}</p>
-            <p className="text-[11px] text-white/50 truncate">{user?.email ?? 'demo@lerycke.es'}</p>
-          </div>
-          <button
-            type="button"
-            onClick={logout}
-            className="text-white/60 hover:text-white"
-            title="Cerrar sesión"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M16 17l5-5-5-5M21 12H9" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
+      <aside
+        className={[
+          'fixed inset-y-0 left-0 z-30 w-64 bg-brand-900 text-white flex flex-col transition-transform duration-200',
+          open ? 'translate-x-0' : '-translate-x-full',
+          'lg:translate-x-0',
+        ].join(' ')}
+      >
+        {/* Brand block */}
+        <div className="py-6 border-b border-white/10">
+          <img
+            src="/brand/LOGOpinche-web_COMPLETO.jpg"
+            alt="LERYCKEMARTI"
+            className="block w-full h-auto"
+          />
         </div>
-      </div>
-    </aside>
+
+        {/* Navigation */}
+        <nav className="flex-1 px-3 py-4 space-y-1">
+          {navItems.map(({ to, label, Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              onClick={onClose}
+              className={({ isActive }) =>
+                [
+                  'flex items-center gap-3 px-3 py-2.5 rounded text-sm transition-colors',
+                  isActive
+                    ? 'bg-white/10 text-white'
+                    : 'text-white/70 hover:text-white hover:bg-white/5',
+                ].join(' ')
+              }
+            >
+              <Icon />
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* User + logout */}
+        <div className="px-4 py-4 border-t border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-brand-600 flex items-center justify-center text-sm font-semibold">
+              {user?.nombre?.charAt(0) ?? 'L'}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-medium truncate">{user?.nombre ?? 'Lerycke'}</p>
+              <p className="text-[11px] text-white/50 truncate">{user?.email ?? 'demo@lerycke.es'}</p>
+            </div>
+            <button
+              type="button"
+              onClick={logout}
+              className="text-white/60 hover:text-white"
+              title="Cerrar sesión"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M16 17l5-5-5-5M21 12H9" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </aside>
+    </>
   )
 }

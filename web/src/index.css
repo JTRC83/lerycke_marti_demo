@@ -136,6 +136,12 @@ body {
     page-break-inside: auto;
   }
 
+  /* Fuerza el salto de página antes de esta seccion en el PDF */
+  .print-page-break {
+    break-before: page;
+    page-break-before: always;
+  }
+
   .print-section-title {
     font-size: 14px;
     font-weight: 700;

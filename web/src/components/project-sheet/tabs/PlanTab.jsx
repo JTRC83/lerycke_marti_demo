@@ -368,22 +368,27 @@ function PlanGenerated({ proyecto, onVerify }) {
           <h4 className="text-sm font-semibold uppercase tracking-wider text-surface-muted">Estancias</h4>
           <button type="button" onClick={addEstancia} className="text-sm text-brand-700 hover:text-brand-800">+ Añadir estancia</button>
         </div>
-        <div className="grid grid-cols-12 gap-2 text-[10px] uppercase tracking-wider text-surface-muted mb-1 px-1">
-          <span className="col-span-4">Nombre</span>
-          <span className="col-span-2">Tag</span>
-          <span className="col-span-2">m²</span>
-          <span className="col-span-2">Tipo reforma</span>
-          <span className="col-span-1">Detalle</span>
-          <span className="col-span-1" />
+        {/* Contenedor con scroll horizontal para que las columnas no se compriman */}
+        <div className="overflow-x-auto -mx-6 px-6 pb-1">
+          <div className="min-w-[760px]">
+            <div className="grid grid-cols-12 gap-2 text-[10px] uppercase tracking-wider text-surface-muted mb-1 px-1">
+              <span className="col-span-4">Nombre</span>
+              <span className="col-span-2">Tag</span>
+              <span className="col-span-2">m²</span>
+              <span className="col-span-2">Tipo reforma</span>
+              <span className="col-span-1">Detalle</span>
+              <span className="col-span-1" />
+            </div>
+            {plan.estancias.map((est, idx) => (
+              <EditableEstancia
+                key={est.id}
+                estancia={est}
+                onChange={(nueva) => updateEstancia(idx, nueva)}
+                onDelete={() => deleteEstancia(idx)}
+              />
+            ))}
+          </div>
         </div>
-        {plan.estancias.map((est, idx) => (
-          <EditableEstancia
-            key={est.id}
-            estancia={est}
-            onChange={(nueva) => updateEstancia(idx, nueva)}
-            onDelete={() => deleteEstancia(idx)}
-          />
-        ))}
       </div>
 
       {/* Trabajos a realizar */}
